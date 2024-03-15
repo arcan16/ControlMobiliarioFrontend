@@ -1,0 +1,4 @@
+Cambiar localhost por la ip del servidor
+Login
+ReservacionesActivas
+ReservacionesAgendadasVigentes

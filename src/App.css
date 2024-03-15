@@ -1,0 +1,921 @@
+html,
+body{
+  box-sizing: border-box;
+  font-size: 16px;
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
+}
+
+*,
+*::after,
+*::before{
+  box-sizing: border-box;
+}
+body{
+  min-height: 100vh;
+}
+
+.box-login{
+  width: 100%;
+  min-height: 100vh;
+  background: linear-gradient(156deg, rgb(178, 206, 253) 0%, rgb(222, 221, 221) 37%, rgb(241, 244, 253) 78%, rgb(221, 221, 221) 92%);
+  display: flex;
+  flex-direction:column;
+  align-items: center;
+  padding-bottom: 1rem;
+}
+.box-login>h1{
+  margin: 1rem;
+  font-size: 1.5rem;
+}
+@media(min-width: 480px){
+  .box-login>h1{
+    margin: 1rem;
+    font-size: 2rem;
+  }
+}
+
+.logo-negocio{
+  width: 150px;
+  height: auto;
+  /* margin: 0 auto; */
+}
+
+.login-container{
+  box-sizing: border-box;
+  max-width: 60%;
+  min-width: 300px;
+  display: flex;
+  flex-direction: inherit;
+  background-color: white;
+  padding: 1rem 2rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.login-container,
+.btn-options{
+  box-shadow: 2px 4px 10px gray;
+}
+
+.btn-options{
+  max-width: 60%;
+  min-width: 300px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  font-size: 1rem;
+  font-weight: bold;
+  border: none;
+}
+.btn-options:hover{
+  background-color: rgb(204, 204, 204);
+  cursor: pointer;
+}
+.btn-options:active{
+  background-color: rgb(170, 170, 170);
+}
+
+
+.titulo-login,
+.titulo-login ~ p{
+  margin: 0;
+}
+.titulo-login ~ p{
+  margin-bottom: .5rem;
+}
+
+.credentials{
+  border: none;
+  margin: 1rem;
+  border-bottom: 2px solid rgb(15, 7, 250);
+  border-bottom-width: 1px;
+  padding: .3rem;
+  font-size: 1rem;
+}
+.credentials:focus{
+  outline: none;
+}
+
+.credentials::before{
+  content: "asfd";
+  display: block;
+  
+  /* margin-bottom: 10px; */
+}
+
+.btn-login{
+  margin-top: 1rem;
+  background-color: #000fff;
+  color: white;
+  width: 60%;
+  padding: .5rem;
+  margin-left: auto;
+  
+}
+
+/* .btn-options{
+  box-sizing: border-box;
+  max-width: 60%;
+  min-width: 300px;
+  height: 50px;
+  padding: 1.5rem 0;
+  border: none;
+  background-color: white;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+} */
+
+/* .btn-options:hover{
+  background-color: rgb(196, 196, 196);
+}
+.btn-options:active{
+  background-color: gray;
+  border: dotted;
+} */
+
+
+/* Estilos para el navbar */
+.nav-container >h2{
+  font-weight: 400;
+  color: white;
+}
+.nav-container > h2 > span{
+  font-weight: bold;
+}
+
+.nav-container{
+  height: 15vh;
+  position: sticky;
+  top: 0;
+  left: 0;
+  padding: .4rem;
+  background-color: rgb(202, 202, 202);
+  box-shadow: 0 -1rem 5px -10px white inset;
+  /* border-radius: 0 0 1rem 1rem; */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 2;
+}
+
+a{
+  color: white;
+  text-decoration: none;
+  margin-right: 1rem;
+}
+.logo-container{
+  width: 80vw;
+  gap: 1rem;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  font-size: .85rem;
+  padding-left: 2rem;
+}
+.logo-principal{
+  width: 4rem;
+  height: fit-content;
+  border-radius: 1rem;
+}
+
+.logo-titulo{
+  font-size: 1rem;
+}
+
+@media(min-width: 480px){
+  .logo-titulo{
+    font-size: 1.5rem;
+  }
+}
+
+/* Comienza diseño para boton de hamburguesa */
+/* nav-icon-5 */
+.nav-icon-5{
+  width: 35px;
+  height: 30px;
+  margin: 10px 10px;
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+.nav-icon-5 span{
+  background-color:#fff;
+  position: absolute;
+  border-radius: 2px;
+  transition: .3s cubic-bezier(.8, .5, .2, 1.4);
+  width:100%;
+  height: 4px;
+  transition-duration: 500ms
+}
+.nav-icon-5 span:nth-child(1){
+  top:0px;
+  left: 0px;
+}
+.nav-icon-5 span:nth-child(2){
+  top:13px;
+  left: 0px;
+  opacity:1;
+}
+.nav-icon-5 span:nth-child(3){
+  bottom:0px;
+  left: 0px;
+}
+.nav-icon-5:not(.open):hover span:nth-child(1){
+  transform: rotate(-3deg) scaleY(1.1);
+}
+.nav-icon-5:not(.open):hover span:nth-child(2){
+  transform: rotate(3deg) scaleY(1.1);
+}
+.nav-icon-5:not(.open):hover span:nth-child(3){
+  transform: rotate(-4deg) scaleY(1.1);
+}
+.nav-icon-5.open span:nth-child(1){
+  transform: rotate(45deg);
+  top: 13px;
+}
+.nav-icon-5.open span:nth-child(2){
+  opacity:0;
+}
+.nav-icon-5.open span:nth-child(3){
+  transform: rotate(-45deg);
+  top: 13px;
+}
+
+
+.links{
+  position:absolute;
+  top: -700px;
+  left: -2000px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  right: 0;
+  transition: all .5s ease;
+}
+.links>a{
+  color: white;
+  font-size: 2rem;
+  display: block;
+}
+
+.links.active{
+  width: 100%;
+  height: 100%;
+  display: block;
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  top: 80%;
+  left: 0;
+  right: 0;
+  text-align: center;
+}
+
+.links.active>a{
+  color: white;
+  font-size: 2rem;
+  margin-top: 1rem;
+}
+/* Comienza diseño para bg-div */
+.bg-div{
+  position: absolute;
+  /* background-color: #222; */
+  background-color: rgb(140, 140, 140);
+  top: -700px;
+  left: -2000px;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  transition: all .6s ease;
+}
+.bg-div.active{
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+  border-radius: 0 0 60% 0;
+}
+
+@media (min-width: 768px) { 
+  .burguer{
+    display: none;
+  }    
+
+  .links{
+    position:initial;
+    margin: 0;
+    width: fit-content;
+  }
+
+  .links>a{
+    font-size: 1.2rem;
+    color: rgb(94, 92, 92);
+    display: inline;
+    
+  }
+
+  .logo-container{
+    width: 40vw;
+  }
+  .logo-titulo{
+    font-size: 1.2rem;
+    color: white;
+    margin-bottom: 1rem;
+  }
+}
+#root{
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Comienza el diseño para dashboard-container */
+.dashboard-container{
+  
+  width: 100%;
+  display: grid;
+  grid-template-columns: 45% 45%;
+  /* gap: .8rem; */
+  gap: .7rem;
+  justify-content: center;
+}
+/* Finaliza el diseño para dashboard-container */
+
+/* Comienza el diseño para las data-card (tarjetas con informacion) */
+.data-card{
+  width: 100%;
+  min-height: 25vh;
+  padding: 1rem;
+  background-color: rgb(228, 228, 228);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items:center;
+  box-shadow: 2px 4px 10px rgb(208, 208, 208);
+  
+}
+.data-card > h3,
+.data-card> h2{
+  margin: 0;
+  text-align: center;
+}
+.cardx2{
+ grid-column: span 2;
+ 
+ /* display: flex;
+ flex-direction: row;
+ flex-wrap: wrap;
+ gap: .3rem;
+ align-items: stretch; */
+
+ display: flex;
+ flex-direction: column;
+}
+
+.individual-box{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+  padding: .5rem;
+  border-radius: .5rem;
+  margin: .3rem 0;
+  flex-grow: 1;
+  background-color:rgb(239, 239, 239);
+}
+
+.desc-card{
+  margin: 0;
+}
+
+/* Finaliza el diseño para las data-card (tarjetas con informacion) */
+
+
+/* Comienza el diseño para reservaciones-container */
+.reservaciones-container{
+  /* position: absolute; */
+  top: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(241, 240, 240);
+  justify-content: center;
+  padding-bottom: 5rem;
+  /* padding-right: 4.5rem; */
+}
+.reservaciones-container>h2{
+  margin: .5rem;
+  text-align: center;
+}
+
+.search-container{
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: .5rem;
+}
+
+.summary-box{
+  text-align: center;
+  cursor: pointer;
+  list-style: none;
+  /* border: solid thin black; */
+  width: 30%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: .3rem;
+  border-radius: 1rem;
+  padding: .3rem;
+  font-weight: bolder;
+}
+.summary-box:hover{
+  background-color: rgb(218, 218, 218);
+}
+.summary-box.active{
+  background-color: rgb(218, 218, 218);
+}
+
+
+.filter-search-input{
+  width: 70%;
+  height: 2rem;
+  border-color:  rgb(218, 218, 218);
+  border-radius: 1rem 0 0 1rem;
+  padding: .4rem;
+  padding-left: .5rem;
+}
+
+.filter-search-input:focus{
+  outline: none;
+}
+
+.filter-search-btn{
+  width: 20%;
+  height: 2rem;
+  /* box-sizing: border-box; */
+  border: none;
+  background-color: rgb(218, 218, 218);
+  color: black;
+  font-weight: bolder;
+  border-radius: 0 1rem 1rem 0;
+  padding: .6rem;
+}
+.filter-search-btn:hover{
+  background-color: rgb(176, 173, 173);
+  color: white;
+}
+.filter-search-btn:active{
+  background-color: gray;
+}
+
+.filters-container{
+  box-sizing: border-box;
+  width: 100%;
+  height: fit-content;
+  /* display: grid;
+  grid-template-columns: 20% 40% 40%; */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* grid-template-columns: repeat(3,1fr); */
+  justify-content: center;
+  /* gap: 1rem; */
+  /* padding: .5rem;  */
+  row-gap: .5rem;
+}
+.filter-top{
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  padding: 1rem;
+  grid-column: span 3;
+  background-color: rgb(255, 255, 255);
+  border-radius: 1rem;
+}
+
+
+.filter-middle{
+  grid-column: span 3;
+  background-color: white;
+  border-radius: 1rem;
+}
+
+.filter-periodo{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.filter-periodo{
+  width: 100%;
+  height: fit-content;
+}
+.rango-fechas-box{
+  width: 100%;
+  display: inline-flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.filter-periodo > div > p{
+  display: inline-block;
+  margin: .8rem;
+}
+
+.filter-bottom{
+  width: 100%;
+  display: inline-flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  grid-column: span 3;
+  background-color: white;
+  border-radius: 1rem;
+}
+.filter-bottom>label{
+  text-align: center;
+}
+
+.btn{
+  width: 100px;
+  padding: .3rem;
+  border-radius: 1rem;
+  color: black;
+  font-weight: bolder;
+  border: none;
+  background-color: rgb(218, 218, 218);
+}
+.btn:hover{
+  background-color: rgb(196, 196, 196);
+  color: white;
+}
+.btn:active{
+  background-color: gray;
+  /* border: dotted; */
+}
+
+.btn-add{
+  position: absolute;
+  /* position: sticky; */
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1.4rem;
+  /* padding: 1rem; */
+  background-color: rgb(111, 4, 19);
+  font-size: 2rem;
+  color: white;
+  font-weight: bolder;
+  border: none;
+  text-align: center;
+  margin: 0;
+  display: flex;
+  font-family: Arial, Helvetica, sans-serif;
+  justify-content: center;
+  align-items: center;
+}
+/* Finaliza el diseño para reservaciones-container */
+
+/* Comienza diseño de Reservaciones */
+.data-table{
+  width: 100%;
+  background-color: white;
+  /* border-collapse: collapse; */
+  border-spacing: 0 10px;
+}
+
+/* Finaliza el diseño de Reservaciones */
+
+/* Comienza el diseño para ReservacionIndividual.jsx */
+
+.row-reservacion{
+  /* background-color: lightcyan; */
+  height: 50px;
+  min-height: 40px;
+}
+
+.row-reservacion td{
+  border-right: 1px solid rgb(206, 206, 206);
+  text-align: center;
+}
+
+/* Finaliza el diseño para ReservacionIndividual.jsx */
+
+/* Comienza diseño para ventana modal */
+
+.ventana-modal{
+  position: fixed;
+  z-index: 999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  /* background-color: gray; */
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  display: none;
+}
+.ventana-modal.is-open{
+  display: flex;
+}
+
+.modal-container {
+  position: relative;
+  padding: 1rem;
+  /* min-width: 300px;
+  max-width: 480px; */
+  width: 90%;
+  /* min-height: 90vh;
+  max-height: 90vh; */
+  height: 70vh;
+  /* top: 5vh; */
+  /* left: 5vh; */
+  overflow-y: scroll;
+  background-color: #fff;
+  border-radius: 1rem;
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 1.3rem;
+  padding: .5rem;
+  border: none;
+  font-weight: bolder;
+  font-size: 1.5rem;
+  background-color: rgb(184, 184, 184);
+  color: white;
+}
+.modal-close:hover{
+  cursor: pointer;
+  background-color: rgb(84, 84, 84);
+}
+.modal-close:active{
+  background-color: black;
+}
+
+.btns-container{
+  margin-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-modal{
+  width: fit-content;
+  padding: .5rem;
+  height: fit-content;
+  color: white;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+  background-color: rgb(0, 114, 34);
+  border: none;
+}
+
+.btn-modificar{
+  background-color: rgb(0, 36, 114);
+}
+.btn-recepcion{
+  background-color: rgb(241, 148, 7);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-cancelar{
+  background-color: red;
+  border: none;
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: fit-content;
+  padding: .5rem;
+  height: fit-content;
+  color: white;
+  border-radius: 1rem;
+  font-size: 1.5rem;
+}
+
+
+.btn-modal-container{
+  /* background-color: gray; */
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));  
+  row-gap: 1rem;
+  place-items: center; /* Centra el contenido de la celda de un grid */
+}
+
+/* Finaliza diseño para ventana modal */
+
+/* Comienza el diseño para AddReservaciones.jsx */
+
+.add-section{
+  width: 100%;
+  height: 100%;
+  /* background-color: gray; */
+  display: inline-flex;
+  flex-direction: column;
+  row-gap: 1rem;
+  padding: 0 1rem;
+}
+.add-mobiliario-title{
+  margin: 0;
+  text-align: center;
+}
+.client-search-box{
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.client-search-box >p{
+  margin: 0;
+}
+.cliente-input{
+  width: 60%;
+  border-radius: .3rem;
+  /* background-color: red; */
+  /* color: red; */
+}
+.reservacion-details-box{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.add-periodo-box{
+  display: grid;
+  grid-template-columns: 45% 45%;
+  justify-content: space-between;
+}
+.reservacion-details-box  p{
+  margin: 0;
+}
+.mobiliario-box-container{
+  display:grid;
+  grid-template-columns: 70% 20%;
+  justify-content: space-between;
+}
+/* .mobiliario-box-container>*{
+  margin: 0;
+} */
+
+
+.mobiliario-label{
+  font-size: 1rem;
+  font-weight: bolder;
+}
+
+#mobiliario{
+  border: none;
+  border-bottom: 1px solid black;
+  border-radius: .3rem;
+  padding: .5rem;
+}
+#cantidad{
+  text-align: center;
+  border: none;
+  border-bottom: 1px solid black;
+  border-radius: .3rem;
+}
+
+.btn-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+.btn.eliminar{
+  background-color: red;
+  color: white;
+}
+
+.btns-container-add-reservacion{
+  width: 100%;
+  height: 15vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding-bottom: 2rem;
+}
+
+.btn-navlink{
+  width: 100px;
+  padding: .3rem;
+  border-radius: 1rem;
+  color: black;
+  font-weight: bolder;
+  border: none;
+  background-color: rgb(218, 218, 218);
+  text-align: center;
+  margin-right: 0;
+}
+
+.btn-navlink:hover{
+  background-color: rgb(196, 196, 196);
+  color: white;
+}
+.btn-navlink:active{
+  background-color: gray;
+  /* border: dotted; */
+}
+
+/* Finaliza el diseño para AddReservaciones.jsx */
+
+/* Comienza el diseño para ContenidoPresentacion.jsx */
+
+.add-description-container{
+  background-color: rgb(229, 229, 229);
+  padding: 0 .5rem;
+  border-radius: .4rem;
+}
+.add-content>*{
+  display: inline-block;
+}
+.td-center-tx{
+  text-align: center;
+}
+
+/* Finaliza el diseño para ContenidoPresentacion.jsx */
+
+/* Comienza diseño para SelectClientCard.jsx */
+
+.clients-table{
+  width: 100%;
+  height: 45vh;
+  margin-top: .5rem;
+  border-radius: .4rem;
+  /* background-color: gray; */
+}
+
+.clients-table > tbody > tr{
+  height: 50px;
+  /* border-bottom: 1px solid black; */
+} 
+.clients-table td {
+  border-bottom: 1px solid black;
+}
+
+.client-search-container{
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  /* margin-top: 3rem; */
+}
+
+.search-box{
+  border-radius: .3rem;
+  border: none;
+  border-bottom: 1px solid black;
+}
+
+/* Finaliza diseño para SelectClientCard.jsx */
+
+/* Comienza diseño para contenido de modal add-modal-cliente-content */
+
+.add-client-modal-content{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.add-client-modal-content>div{
+  width: 80%;
+  display: grid;
+  grid-template-columns: 30% 60%;
+  row-gap: .5rem;
+}
+
+.ad-client-btns-container{
+  padding-top: 1rem;
+  grid-column-start: 2;
+  grid-column-end: 3;
+  column-gap: 1rem;
+  display: flex;
+}
+
+.add-client-modal-content input[type="button"]{
+  grid-column: span 2;
+  margin-left: auto;
+  margin-right: auto;
+  width: 6rem;
+  padding: .3rem;
+}
+
+/* Finaliza diseño para contenido de modal add-modal-cliente-content */
