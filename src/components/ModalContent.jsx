@@ -1,7 +1,13 @@
 import { NavLink } from "react-router-dom";
 import { helpHost } from "../helpers/helpHost";
 import { helpHttp } from "../helpers/helpHttp";
-import EntregaIndividual from "./EntregaIndividual";
+import EntregaIndividual from "./cards/EntregaIndividual";
+import { useDispatch } from "react-redux";
+import { setData } from "../actions/dataActions";
+// import ModalReservaciones from "./ModalReservaciones";
+import CobroReservacion from "./reservaciones/CobroReservacion";
+import { useState } from "react";
+import Modal from "./Modal";
 
 function ModalContent({
   data,
@@ -9,6 +15,9 @@ function ModalContent({
   setReservacionesPeriodo,
   reservacionesPeriodo,
 }) {
+  const [modalCobro, setModalCobro] = useState(false);
+  const [isOpenCobro, setIsOpenCobro] = useState(false);
+
   let api = helpHttp();
   let host = helpHost().getIp();
   let url = `http://${host}:8080/reservacion`;
@@ -42,6 +51,23 @@ function ModalContent({
     });
   }
 
+  const dispatch = useDispatch();
+
+  /* Comienza comportamiento modal para cobro */
+
+  function handleClickCobro() {
+    setIsOpenCobro(true);
+    setModalCobro(true);
+  }
+
+  function closeModalCobro() {
+    setModalCobro(false);
+  }
+
+  
+
+  /* Finaliza comportamiento modal para cobro */
+
   return (
     <div className="modal-content">
       <h2>Reservacion {data.idReservacion}</h2>
@@ -57,15 +83,29 @@ function ModalContent({
                 Entregar
               </button>
               {/* <button className="btn">Modificar</button> */}
-              <NavLink className="btn-navlink" to="/reservaciones/add" data={data}>Modificar</NavLink>
+              <NavLink
+                className="btn-navlink"
+                to="/reservaciones/add"
+                onClick={() => dispatch(setData(data))}
+              >
+                Modificar
+              </NavLink>
             </>
           ) : data.status == 1 ? (
             <>
-              <button className="btn-modal btn-recepcion">Recepcion</button>
+              <button
+                className="btn-modal btn-recepcion"
+                onClick={handleClickCobro}
+              >
+                Recepcion
+              </button>
             </>
           ) : null}
         </div>
       </article>
+      {modalCobro ?(<Modal closeModal={closeModalCobro} isOpen={isOpenCobro}>
+        <CobroReservacion closeModal={closeModalCobro} closeModalRaiz={closeModal} data={data}/>
+      </Modal>):null}
     </div>
   );
 }

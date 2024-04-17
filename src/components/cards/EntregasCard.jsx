@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { helpHttp } from "../../helpers/helpHttp";
-import EntregaIndividual from "../EntregaIndividual";
+import EntregaIndividual from "./EntregaIndividual";
 import { helpHost } from "../../helpers/helpHost";
 
 function EntregasCard() {
@@ -26,8 +26,13 @@ function EntregasCard() {
     getEntregas();
   }, []);
 
+  function handleEntregasProgramadas(){
+    // alert("Entregas programadas para hoy")
+    location.href="/reservaciones";
+  }
+
   return (
-    <div className="data-card cardx2">
+    <div className="data-card cardx2" onClick={handleEntregasProgramadas}>
       <h3>Entregas programadas para hoy</h3>
       {entregas.length > 0
         ? entregas.map((el) => (

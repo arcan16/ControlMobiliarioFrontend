@@ -3,22 +3,25 @@ import { helpHttp } from "../../helpers/helpHttp";
 import { helpHost } from "../../helpers/helpHost";
 import ContenidoPresentacion from "./ContenidoPresentacion";
 import ItemLIsta from "./ItemLista";
-import ModalReservaciones from "../../components/ModalReservaciones";
-import ModalContent from "../../components/ModalContent";
-import SelectClientCard from "./SelectClientCard";
+// import ModalReservaciones from "../ModalReservaciones";
+// import SelectClientCard from "../clientes/SelectClientCard";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
+import SelectClientCard from "../clientes/SelectClientCard";
+import Modal from "../Modal";
 
-export default function AddReservaciones({data}) {
-  const [mobiliario, setMobiliario] = useState([]);
-  const [contenido, setContenido] = useState([]);
-  const [lista, setLista] = useState([]);
-  const [total, setTotal] = useState(0.0);
-  const [isEdith, setIsEdith] = useState(false);
-
+export default function AddReservaciones() {
+  const [mobiliario, setMobiliario] = useState([]); // Presentaciones de mobiliario
+  const [contenido, setContenido] = useState([]); // Descripcion del mobiliario
+  const [lista, setLista] = useState([]); // Lista de elementos en la reservacion
+  const [total, setTotal] = useState(0.0); // Total de los items
+  const [isEdith, setIsEdith] = useState(false); // Editando elemento de la reservacion
+  
+  /* Comportamiento de apertura/cierre de la ventana modal */
   const [modal, setModal] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
-  // const [dataModal, setDataModal] = useState(null);
 
+  /* Datos del cliente en curso */
   const [cliente, setCliente] = useState(null);
 
   let api = helpHttp();
@@ -36,14 +39,77 @@ export default function AddReservaciones({data}) {
   }
 
   useEffect(() => {
-    console.log(data)
-    if (data != null){
-      console.log(data);
-    }else{
-      getReservaciones();
-    }
-  }, []);
+    if (mobiliario.length === 0) getReservaciones();
 
+    // console.log("Mobiliario: " + mobiliario.length);
+    if (lista.length === 0) {
+      if (mobiliario.length > 0 && Object.keys(state).length > 0) {
+        const newList = [];
+        state.reservPrestamoList.forEach((el) => {
+          mobiliario.forEach((mob) => {
+            if (mob.id == el.idPresentacion)
+              newList.push({ ...mob, cantidad: el.cantidad });
+          });
+        });
+        setLista(newList);
+      }
+    }
+  }, [mobiliario]);
+  
+
+  /* Estado con informacion del registro en caso de estar editando la reservacion */
+  const state = useSelector((state) => state.data);
+
+  useEffect(() => {
+    if (Object.keys(state).length > 0) {
+      let url = `http://${host}:8080/clients/name`;
+      let options = {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "Content-Type": "application/json",
+        },
+        body: {
+          cliente: state.cliente,
+        },
+      };
+      // console.log(state)
+      api.post(url, options).then((res) => {
+        // Llenando campo de cliente y domicilio
+        setCliente(res);
+      });
+
+      /* Llenando campo de fecha para edicion */
+      const $fecha1 = document.getElementById("date-delivery");
+      const $fecha2 = document.getElementById("date-reception");
+      $fecha1.value = state.fechaEntrega.slice(0, 10);
+      $fecha2.value = state.fechaRecepcion.slice(0, 10);
+    }
+  }, [state]);
+
+  /* Llenando lista de mobiliario para edicion */
+  // useEffect(() => {
+  //   if(mobiliario.length>0 && Object.keys(state).length>0){
+  //     console.log(mobiliario);
+  //     console.log(state);
+
+  //     console.log(state.reservPrestamoList)
+
+  //     // setLista([state.reservPrestamoList.forEach(el => {
+  //     //   mobiliario.forEach(mob=>{
+  //     //     if(mob.id== el.idPresentacion) return mob;
+  //     //   })
+  //     // })])
+
+  //     state.reservPrestamoList.forEach(el => {
+  //        mobiliario.forEach(mob=>{
+  //         if(mob.id== el.idPresentacion) setLista([...lista,mob])
+  //       })
+  //     });
+  //     // console.log(lista2)
+  //   }
+  // }, [mobiliario])
+
+  /* Despliega la informacion del item descrito en el input (en caso de existir) */
   function handleChangeText(e) {
     const $cantidad = window.document.getElementById("cantidad");
     const $addBtn = window.document.querySelector(".btn.agregar");
@@ -53,6 +119,7 @@ export default function AddReservaciones({data}) {
     setContenido(newData);
   }
 
+  /* Agrega item a la lista de elementos */
   function handleAdd() {
     if (contenido.length == 0 && !isEdith) return;
     const $mobiliario = window.document.getElementById("mobiliario");
@@ -64,6 +131,7 @@ export default function AddReservaciones({data}) {
       (item) => item.descripcion == $mobiliario.value
     );
 
+    /* Controla el comportamiento del boton para agregar o editar elementos de la lista */
     if (isEdith) {
       // console.log("Editando");
       setLista(
@@ -102,6 +170,7 @@ export default function AddReservaciones({data}) {
     // $addBtn.disabled = true;
   }
 
+  /* Controla el comportamiento al clickar sobre el elemento de la lista para su edicion*/
   function handleClickEdit(data) {
     const $mobiliarioInput = window.document.getElementById("mobiliario");
     const $cantidadInput = window.document.getElementById("cantidad");
@@ -115,6 +184,7 @@ export default function AddReservaciones({data}) {
     $addBtn.disabled = false;
   }
 
+  /* Controla la eliminacion del registro en de la lista */
   function handleDelete() {
     const $mobiliarioInput = window.document.getElementById("mobiliario");
     const $cantidadInput = window.document.getElementById("cantidad");
@@ -132,6 +202,7 @@ export default function AddReservaciones({data}) {
     $addBtn.textContent = "Agregar";
   }
 
+  /* Limpia el item seleccionado de las cajas de seleccion */
   function handleCancelBtn() {
     const $mobiliarioInput = window.document.getElementById("mobiliario");
     const $cantidadInput = window.document.getElementById("cantidad");
@@ -169,9 +240,10 @@ export default function AddReservaciones({data}) {
 
   function handleClickSave(e) {
     if (lista.length === 0)
-      return alert(
-        "No puedes almacenar una recervacion sin seleccionar mobiliario"
-      ), e.preventDefault();
+      return (
+        alert("No puedes almacenar una recervacion sin seleccionar mobiliario"),
+        e.preventDefault()
+      );
 
     // Al definir timeZone:'UTC' evitamos que nos modifique la fecha utilizada
     const options = {
@@ -200,29 +272,34 @@ export default function AddReservaciones({data}) {
 
     // Comienzan validaciones
 
-    if (cliente == null) return alert("Necesitas seleccionar un cliente"), e.preventDefault();
-    if($DireccionEntrega.value=="")return alert("Necesitas definir la direccion de entrega"), e.preventDefault();
+    if (cliente == null)
+      return alert("Necesitas seleccionar un cliente"), e.preventDefault();
+    if ($DireccionEntrega.value == "")
+      return (
+        alert("Necesitas definir la direccion de entrega"), e.preventDefault()
+      );
 
     if (dateDelivery < new Date())
       return (
         alert("La fecha de entrega no puede ser menor a la fecha actual"),
-        $DateDelivery.focus(),e.preventDefault()
+        $DateDelivery.focus(),
+        e.preventDefault()
       );
     if (dateReception < new Date())
       return (
         alert("La fecha de recepcion no puede ser menor a la fecha actual"),
-        $DateReception.focus(),e.preventDefault()
+        $DateReception.focus(),
+        e.preventDefault()
       );
     if (dateDelivery > dateReception)
       return (
         alert("La fecha de entrega no puede ser despues de la recepcion"),
-        $DateDelivery.focus(),e.preventDefault()
+        $DateDelivery.focus(),
+        e.preventDefault()
       );
 
-    alert("Ahora si, a crear el registro");
-
     let api = helpHttp();
-    let url = `http://${host}:8080/reservacion`;
+    let url  = `http://${host}:8080/reservacion`;
 
     let options2 = {
       headers: {
@@ -234,19 +311,33 @@ export default function AddReservaciones({data}) {
         direccionEntrega: $DireccionEntrega.value,
         fechaEntrega: dateDelivery,
         fechaRecepcion: dateReception,
-        reservPrestamoList:lista.map((el)=>{
-          return {idPresentacion: el.id,cantidad: el.cantidad}
-        })
-      }
+        reservPrestamoList: lista.map((el) => {
+          return { idPresentacion: el.id, cantidad: el.cantidad };
+        }),
+      },
     };
-    console.log(options2)
-    api.post(url, options2).then((res) => {
-      if(res.err){
-        return alert("Error: "+res.err),
-        e.preventDefault()
-      }
-    });
-    
+    console.log(options2);
+    if (Object.keys(state).length > 0) {
+      options2.body.idReservacion=state.idReservacion;
+      // console.log(options2)
+      // console.log(url)
+      // console.log(options2)
+      api.put(url, options2).then((res) => {
+        if (res.err) {
+          return alert("Error: " + res.err), e.preventDefault();
+        }
+      });
+    } else {
+      e.preventDefault();
+      console.log(options2)
+      api.post(url, options2).then((res) => {
+        if (res.err) {
+          return alert("Error: " + res.err), e.preventDefault();
+        }
+      });
+    }
+    e.preventDefault();
+    location.href="/reservaciones";
   }
 
   return (
@@ -368,9 +459,10 @@ export default function AddReservaciones({data}) {
         ""
       )}
       {modal ? (
-        <ModalReservaciones closeModal={closeModal} isOpen={isOpen}>
+        <Modal closeModal={closeModal} isOpen={isOpen}>
+          <h2>Buscar cliente</h2>
           <SelectClientCard setCliente={setCliente} closeModal={closeModal} />
-        </ModalReservaciones>
+        </Modal>
       ) : null}
       <div className="btns-container-add-reservacion">
         {/* <input
@@ -379,7 +471,12 @@ export default function AddReservaciones({data}) {
           className="btn"
           onClick={handleClickSave}
         /> */}
-        <NavLink className="btn-navlink" to="/reservaciones" onClick={()=>handleClickSave()}>
+        <NavLink
+          className="btn-navlink"
+          to="/reservaciones"
+          onClick={(e) => handleClickSave(e)}
+          // onClick={() => testUpdate()}
+        >
           Guardar
         </NavLink>
         <NavLink className="btn-add" to="/reservaciones">

@@ -1,3 +1,4 @@
+import CobrosCard from "../components/cards/CobrosCard"
 import EntregasCard from "../components/cards/EntregasCard"
 import MobiliarioTotalCard from "../components/cards/MobiliarioTotalCard"
 import RecepcionCard from "../components/cards/RecepcionCard"
@@ -8,8 +9,9 @@ export default function Dashboard() {
 
   return (
     <div>
-      <h2>Dashboard</h2>
+      <h2 style={{textAlign:"center"}}>Dashboard</h2>
     <section className="dashboard-container">
+      <CobrosCard/>
       <ReservacionesActivasCard/>
       <ReservacionesAgendadasVigentes/>
       <EntregasCard/>

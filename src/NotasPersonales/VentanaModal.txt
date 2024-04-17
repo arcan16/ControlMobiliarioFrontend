@@ -1,0 +1,43 @@
+Requisitos para que funcione la ventana modal
+
+1.- Definir dos estados para controlar el comporatmiento de apertura y cierre de la ventana modal
+    const [modal, setModal] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+2.- Crear las funciones encargadas de la actualizacion de los estados anteriores dependiendo del click
+    
+    /* Apertura del modal */
+    function handleClick() {
+        setIsOpen(true);
+        setModal(true);
+    }
+    /* Cierre del modal */
+    function closeModal() {
+        setModal(false);
+    }
+
+3.- Definimos un operador ternario para controlar el despliegue de la ventana modal, y dentro del mismo
+    mandaremos llamar nuestra ventana modal. Dentro de nuestra ventana modal mandaremos llamar nuestro 
+    componente con la informacion  que se va a mostrar en ella. Tambien le pasaremos la funcion para el 
+    cierre de la ventana modal para que despues de que termine el proceso pueda cerrarla de ser necesario.
+    
+    {modal ?(<ModalReservaciones closeModal={closeModal} isOpen={isOpen}>
+        <CobroReservacion closeModal={closeModal} />
+    </ModalReservaciones>):null}
+
+Codigo de la ventana modal(Originalmente se diseño pensando en las reservaciones donde seria aplicado, sin embargo
+el codigo puede funcionar para cualquier otro propocito, ya que contempla la herencia de children dentro de su 
+contenido):
+
+function ModalReservaciones({children, closeModal, isOpen}) {
+  const handleModalContainerClick = (e) => e.stopPropagation();
+  return (
+    <article className={`ventana-modal ${isOpen && "is-open"}`} onClick={closeModal}>
+      <div className="modal-container"  onClick={handleModalContainerClick}>
+        <button className="modal-close" onClick={closeModal}>X</button>
+        {children}
+      </div>
+    </article>
+  );
+}
+
+export default ModalReservaciones;

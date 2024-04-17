@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { helpHttp } from "../../helpers/helpHttp";
-import EntregaIndividual from "../EntregaIndividual";
+import EntregaIndividual from "./EntregaIndividual";
 import { helpHost } from "../../helpers/helpHost";
 
 function RecepcionCard() {
@@ -26,8 +26,11 @@ function RecepcionCard() {
     getEntregas();
   }, []);
 
+  function recepcionesProgramadasParaHoy(){
+    alert("Recepciones programadas para hoy")
+  }
   return (
-    <div className="data-card cardx2">
+    <div className="data-card cardx2" onClick={recepcionesProgramadasParaHoy}>
       <h3>Recepciones programadas para hoy</h3>
       {recepcion.length > 0
         ? recepcion.map((el) => (

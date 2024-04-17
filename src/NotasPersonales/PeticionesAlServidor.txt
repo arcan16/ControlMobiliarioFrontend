@@ -1,0 +1,37 @@
+Peticiones Al Servidor
+
+1.- Necesitamos nuestro helper para realizar las peticiones:
+    let api = helpHttp();
+
+2.- Importaremos el helper encargado de definir la direccion ip a la que estara dirigida la peticion:
+    let host = helpHost().getIp();
+
+3.- Definiremos la url a la que sera enviada la peticion:
+    let url = `http://${host}:8080/reservacion/periodo`;
+
+4.- Definiremos el metodo que encargado de manejar la peticion y la respuesta recibida desde el servidor:
+
+    function getData() {
+
+        let options = {
+        headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+            "Content-Type": "application/json",
+        },
+        body: {
+            fecha1: $date1.value,
+            fecha2: $date2.value,
+            },
+        };
+        api.post(url, options).then((data) => {
+            setReservacionesPeriodo(data.content);
+        });
+    }
+
+5.- Dependiendo de las necesidades de nuestra aplicacion podremos utilizar un useState para controla que los
+    datos sean solicitados al cargar nuestro componente o bien, adaptar el codigo para realizar la peticion 
+    cuando sea necesario
+
+ useEffect(() => {
+    getData();
+  }, []);

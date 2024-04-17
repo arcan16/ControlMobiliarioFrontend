@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { BurguerButton } from "./BurguerButton";
 import mylogo from "../assets/login/logo2.png";
 import { NavLink } from "react-router-dom";
-import { handleLogout } from "./Perfil";
+// import { handleLogout } from "./Perfil";
+import Cookies from "js-cookie";
+import { useLocation } from "react-router-dom";
+import { helpHttp } from "../helpers/helpHttp";
+import { helpHost } from "../helpers/helpHost";
 
 export function NavBar() {
   const [clicked, setClicked] = useState(false);
@@ -10,17 +14,40 @@ export function NavBar() {
   const handleClick = () => {
     if (window.screen.width < 768) {
       setClicked(!clicked);
-    //   console.log(clicked);
-    //   console.log(window.screen.width);
+      //   console.log(clicked);
+      //   console.log(window.screen.width);
     }
   };
+
+  function closeSession() {
+    let respuesta = confirm("Deseas Cerrar la sesion?");
+    if (respuesta) {
+      localStorage.removeItem("username");
+      localStorage.removeItem("token");
+      localStorage.removeItem("rol");
+      Cookies.remove("credentials");
+      handleClick();
+      location.reload();
+    }
+  }
+  const location = useLocation();
+
+  useEffect(() => {
+    // console.log("Se ha cambiad de locacion");
+    if (!Cookies.get("credentials")) {
+      localStorage.removeItem("username");
+      localStorage.removeItem("token");
+      location.href = "/login";
+    }
+  }, [location]);
+
   return (
     <>
       <nav className="nav-container">
-        <div className="logo-container">
+        <NavLink to="/" className="logo-container" style={{ color: "black" }}>
           <img src={mylogo} className="logo-principal"></img>
           <h2 className="logo-titulo">Control de Mobiliario</h2>
-        </div>
+        </NavLink>
         <div className={`links ${clicked ? "active" : ""}`}>
           <NavLink
             onClick={handleClick}
@@ -38,6 +65,13 @@ export function NavBar() {
           </NavLink>
           <NavLink
             onClick={handleClick}
+            to="/cobros"
+            className={({ isActive }) => (isActive ? "active-link" : null)}
+          >
+            Cobros
+          </NavLink>
+          <NavLink
+            onClick={handleClick}
             to="/catalogo"
             className={({ isActive }) => (isActive ? "active-link" : null)}
           >
@@ -51,7 +85,7 @@ export function NavBar() {
             Configuracion
           </NavLink>
           <NavLink
-            onClick={handleLogout}
+            onClick={closeSession}
             to="/"
             className={({ isActive }) => (isActive ? "active-link" : null)}
           >

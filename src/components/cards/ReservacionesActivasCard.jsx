@@ -18,7 +18,6 @@ function reservacionesActivasCard() {
 
   function getReservaciones(api) {
     api.get(url, options).then((data) => {
-      console.log(data.content);
       setReservacionesActivas(data.content.length);
     });
   }
@@ -27,8 +26,12 @@ function reservacionesActivasCard() {
     getReservaciones(api);
   },[]);
 
+  function handleClick(){
+    location.href="/reservaciones";
+    // alert("Prestamos activos")
+  }
   return (
-    <div className="data-card">
+    <div className="data-card" onClick={handleClick}>
       <h2>{reservacionesActivas}</h2>
       <h3>Prestamos Activos</h3>
     </div>

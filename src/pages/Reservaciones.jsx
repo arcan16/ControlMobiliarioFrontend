@@ -2,43 +2,34 @@ import { useEffect } from "react";
 import { useState } from "react";
 import { helpHttp } from "../helpers/helpHttp";
 import { helpHost } from "../helpers/helpHost";
-import ReservacionIndividual from "../components/ReservacionIndividual";
-import ModalReservaciones from "../components/ModalReservaciones";
+import ReservacionIndividual from "../components/reservaciones/ReservacionIndividual";
 import ModalContent from "../components/ModalContent";
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { resetData } from "../actions/dataActions";
+import Modal from "../components/Modal";
 
 export default function Reservaciones() {
   const [reservacionesPeriodo, setReservacionesPeriodo] = useState(0);
   const [modal, setModal] = useState(true);
   const [isOpen, setIsOpen] = useState(false);
   const [dataModal, setDataModal] = useState(null);
+  
+  const [fechaMostrada, setFechaMostrada] = useState(null);
+
+  const [dataFilter, setDataFilter] = useState([]);
+
   let api = helpHttp();
   let host = helpHost().getIp();
   let url = `http://${host}:8080/reservacion/periodo`;
-  // let url = "http://192.168.1.69:8080/reservacion/periodo";
-  // let url = "http://localhost:8080/reservacion/statusOne";
 
   function handleOpen() {
-    const $details = window.document.querySelector(".filter-details");
-    if ($details.hasAttribute("open")) {
-      $details.removeAttribute("open");
-    } else {
-      $details.setAttribute("open");
-    }
-  }
-
-  function handleSelectChange(e) {
-    const $selectCheckbox = window.document.querySelector(".status-checkbox");
-
-    if (e.target.value != "") {
-      $selectCheckbox.checked = true;
-    } else {
-      $selectCheckbox.checked = false;
-    }
+    getReservaciones();
+    closeFilterContainer();
   }
 
   // Inicializa el valor de los datapickers
-  useEffect(() => {
+  function setDatePeriod() {
     const $date1 = window.document.getElementById("date1");
     const $date2 = window.document.getElementById("date2");
     let fechaBase = new Date();
@@ -54,6 +45,9 @@ export default function Reservaciones() {
 
     $date1.value = anioActual + "-" + mesActual + "-" + "01";
     $date2.value = anioActual + "-" + mesActual + "-" + diasDelMes;
+  }
+  useEffect(() => {
+    setDatePeriod();
   }, []);
 
   /* Comienza fetch */
@@ -61,6 +55,16 @@ export default function Reservaciones() {
   function getReservaciones() {
     const $date1 = window.document.getElementById("date1");
     const $date2 = window.document.getElementById("date2");
+
+    /* Validamos que la fecha sea correcta */
+
+    if (
+      Date.parse(new Date($date2.value).toISOString()) -
+        Date.parse(new Date($date1.value).toISOString()) <
+      0
+    )
+      return alert("Error en las fechas, favor de verificar");
+
     let options = {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -78,19 +82,17 @@ export default function Reservaciones() {
 
   useEffect(() => {
     getReservaciones();
+    let actualDate = (new Date().toLocaleDateString('es',{month:"long",year:'numeric'}));
+    setFechaMostrada(actualDate)
   }, []);
-  /* Termina fetch */
 
-  // function handleChange() {
-  //   const $fec = window.document.querySelector("#date1");
-  //   const options = {
-  //     timeZone: "UTC",
-  //     day: "2-digit",
-  //     month: "2-digit",
-  //     year: "numeric",
-  //   };
-  //   console.log(new Date($fec.value).toLocaleDateString("es-ES", options));
-  // }
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(resetData());
+  }, [dispatch]);
+
+  /* Termina fetch */
 
   function handleClick(data) {
     setDataModal(data);
@@ -101,10 +103,58 @@ export default function Reservaciones() {
     setModal(false);
   }
 
-  // function handleClickBtnAdd(){
-  //   location.href= "/reservas/add";
-  //   // alert("Agregando")
-  // }
+  /* Comienza comportamiento del filtro  */
+
+  function handleFilterChange(e) {
+    if (e.target.type == "text") handelSearchInputChange(e);
+    if (e.target.type == "radio") handleRadioChange(e);
+    
+  }
+
+  function closeFilterContainer(){
+    const $details = window.document.querySelector(".filter-details");
+    if ($details.hasAttribute("open")) {
+      $details.removeAttribute("open");
+    } else {
+      $details.setAttribute("open");
+    }
+  }
+
+  function handelSearchInputChange(e) {
+    // console.log(reservacionesPeriodo)
+
+    let regExp = new RegExp(e.target.value, "gi");
+
+    setDataFilter(
+      reservacionesPeriodo.filter((el) => {
+        if (regExp.test(el.idReservacion)) return el;
+        if (regExp.test(el.cliente)) return el;
+      })
+    );
+  }
+
+
+
+  function handleRadioChange(e) {
+    if (e.target.value == "all") {
+      closeFilterContainer();
+      return setDataFilter(reservacionesPeriodo);
+    }
+    
+    let newData =[];
+    reservacionesPeriodo.forEach(el=>{
+      console.log(el.status)
+      if(el.status==e.target.value)newData.push(el)
+    })
+  console.log("Longitud "+newData.length)
+    if(newData.length==0){
+      setDataFilter([]);
+    }else{
+      setDataFilter(newData);
+    }
+    closeFilterContainer();
+  }
+  
 
   return (
     <section className="reservaciones-container">
@@ -115,6 +165,7 @@ export default function Reservaciones() {
           type="text"
           className="filter-search-input"
           placeholder="Buscar"
+          onChange={handleFilterChange}
           autoFocus
         />
         <input type="button" value="Buscar" className="filter-search-btn" />
@@ -125,64 +176,62 @@ export default function Reservaciones() {
         <article className="filters-container">
           <div className="filter-top">
             <label>
-              <input type="radio" name="reservas" value="all" defaultChecked />
+              <input
+                type="radio"
+                name="reservas"
+                value="all"
+                defaultChecked
+                onClick={handleFilterChange}
+              />
               Todas
             </label>
             <label>
-              <input type="radio" name="reservas" value="entregas" />
-              Entregas
+              <input
+                type="radio"
+                name="reservas"
+                value="0"
+                onClick={handleFilterChange}
+              />
+              Sin entregar
             </label>
             <label>
-              <input type="radio" name="reservas" value="recepcion" />
+              <input
+                type="radio"
+                name="reservas"
+                value="1"
+                onClick={handleFilterChange}
+              />
+              Entregado
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="reservas"
+                value="2"
+                onClick={handleFilterChange}
+              />
               Recepcion
             </label>
             <label>
-              <input type="radio" name="reservas" value="recepcion" />
-              Retraso
-            </label>
-            <label>
-              <input type="radio" name="reservas" value="recepcion" />
+              <input
+                type="radio"
+                name="reservas"
+                value="3"
+                onClick={handleFilterChange}
+              />
               Canceladas
             </label>
           </div>
           <div className="filter-middle">
             <label className="filter-periodo">
-              <div>
-                <input type="radio" name="reservas" value="recepcion" />
-                Periodo
-              </div>
+              <h3 style={{ margin: "0" }}>Periodo</h3>
               <div className="rango-fechas-box">
                 <p>De:</p>
-                <input type="date" name="" id="date1"/>
-                {/* onChange={handleChange} */}
+                <input type="date" name="" id="date1" />
                 <p>a:</p>
                 <input type="date" name="" id="date2" />
               </div>
             </label>
-          </div>
-          <div className="filter-bottom">
-            <label>
-              <input
-                type="checkbox"
-                name="reservas"
-                value="recepcion"
-                className="status-checkbox"
-                disabled
-              />
-              Status
-            </label>
-            <select
-              name=""
-              id=""
-              className="status-select"
-              onChange={handleSelectChange}
-            >
-              <option value="">-- Elige una Opcion --</option>
-              <option value="0">No Entregado</option>
-              <option value="1">Entregado</option>
-              <option value="2">Recibido</option>
-              <option value="3">Cancelado</option>
-            </select>
           </div>
           <input
             className="btn"
@@ -192,6 +241,9 @@ export default function Reservaciones() {
           />
         </article>
       </details>
+      <div>
+        <p style={{margin:"0"}}>Mes: {fechaMostrada}</p>
+      </div>
       <section className="read-reservacion-container">
         <table className="data-table">
           <thead>
@@ -204,22 +256,50 @@ export default function Reservaciones() {
             </tr>
           </thead>
           <tbody>
-            {reservacionesPeriodo != 0
-              ? reservacionesPeriodo.map((el) => (
+            {reservacionesPeriodo !== 0 ? (
+              dataFilter.length > 0 ? (
+                !dataFilter[0].err ? (
+                  dataFilter.map((el) => (
+                    <ReservacionIndividual
+                      key={el.idReservacion}
+                      data={el}
+                      handleClick={() => handleClick(el)}
+                    />
+                  ))
+                ) : (
+                  <tr>
+                    <th colSpan={5}>Sin resultados</th>
+                  </tr>
+                )
+              ) : (
+                reservacionesPeriodo.map((el) => (
                   <ReservacionIndividual
                     key={el.idReservacion}
                     data={el}
                     handleClick={() => handleClick(el)}
                   />
                 ))
-              : <tr><td colSpan={4}>No hay reservaciones registradas</td></tr>}
+              )
+            ) : (
+              <tr>
+                <td colSpan={4}>No hay reservaciones registradas</td>
+              </tr>
+            )}
           </tbody>
         </table>
         {modal ? (
-          <ModalReservaciones closeModal={closeModal} isOpen={isOpen}>
-            {dataModal != null ? <ModalContent data={dataModal} closeModal={closeModal} reservacionesPeriodo={reservacionesPeriodo} setReservacionesPeriodo={setReservacionesPeriodo} /> : null}
-          </ModalReservaciones>
+          <Modal closeModal={closeModal} isOpen={isOpen}>
+            {dataModal != null ? (
+              <ModalContent
+                data={dataModal}
+                closeModal={closeModal}
+                reservacionesPeriodo={reservacionesPeriodo}
+                setReservacionesPeriodo={setReservacionesPeriodo}
+              />
+            ) : null}
+          </Modal>
         ) : null}
+
       </section>
       <NavLink className="btn-add" to="/reservaciones/add">
         +

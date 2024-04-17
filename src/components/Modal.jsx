@@ -1,4 +1,4 @@
-function ModalReservaciones({children, closeModal, isOpen}) {
+function Modal({children, closeModal, isOpen}) {
   const handleModalContainerClick = (e) => e.stopPropagation();
   return (
     <article className={`ventana-modal ${isOpen && "is-open"}`} onClick={closeModal}>
@@ -10,4 +10,4 @@ function ModalReservaciones({children, closeModal, isOpen}) {
   );
 }
 
-export default ModalReservaciones;
+export default Modal;

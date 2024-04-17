@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { helpHttp } from "../../helpers/helpHttp";
-import MobiliarioIndividual from "../MobiliarioIndividual";
+import MobiliarioIndividual from "./MobiliarioIndividual";
 import { helpHost } from "../../helpers/helpHost";
 
 function MobiliarioTotalCard() {
@@ -26,8 +26,12 @@ function MobiliarioTotalCard() {
     getReservaciones();
   }, []);
 
+  function handleClickInventario(){
+    location.href="/mobiliario";
+  }
+
   return (
-    <div className="data-card cardx2">
+    <div className="data-card cardx2" onClick={handleClickInventario}>
       <h3>Inventario</h3>
       {mobiliario.length > 0
         ? mobiliario.map((el) => <MobiliarioIndividual key={el.id} data={el} />)

@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
 import { helpHttp } from "../../helpers/helpHttp";
 import { helpHost } from "../../helpers/helpHost";
-import ModalReservaciones from "../../components/ModalReservaciones";
-import AddClientCard from "../clientes/AddClientCard";
+// import ModalReservaciones from "../../components/ModalReservaciones";
+import AddClientCard from "./AddClientCard";
+import Modal from "../Modal";
+import EdithClient from "./EdithClient";
+// import AddClientCard from "./AddClientCard";
 
-function SelectClientCard({ setCliente, closeModal }) {
+// eslint-disable-next-line react/prop-types
+function CatalogoClientes({ setCliente, closeModal }) {
   const [clientes, setClientes] = useState([]);
   const [lista, setLista] = useState([]);
 
@@ -24,15 +28,17 @@ function SelectClientCard({ setCliente, closeModal }) {
     },
   };
 
-  async function getEntregas() {
+  // Obtiene la informacion del servidor
+  async function getClients() {
     api.get(url, options).then((res) => {
       setClientes(res.content);
       setLista(res.content);
     });
   }
 
+  // Realiza la carga de clientes inicial
   useEffect(() => {
-    getEntregas();
+    getClients();
   }, [addCliente]);
 
   function handleTextChange() {
@@ -49,20 +55,38 @@ function SelectClientCard({ setCliente, closeModal }) {
   }
 
   function handleClientSelected(data) {
-    setCliente(data);
-    closeModal();
+    setIsOpen(true);
+    setModal(true);
+    setClientToEdith(data);
   }
+
   function handleClienteClick() {
     setIsOpen2(true);
     setModal2(true);
   }
+  
   function closeModal2() {
     setModal2(false);
   }
 
+  // Comienza comportamiento para modal de edicion
+
+  const [modal, setModal] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [clientToEdith, setClientToEdith] = useState(null);
+
+  /* Apertura del modal */
+  function handleClick() {
+    setIsOpen(true);
+    setModal(true);
+  }
+  /* Cierre del modal */
+  function closeModal() {
+    setModal(false);
+  }
+
   return (
     <>
-      <h2>Buscar cliente</h2>
       <div className="client-search-container">
         <input
           type="text"
@@ -94,7 +118,7 @@ function SelectClientCard({ setCliente, closeModal }) {
           {clientes.length > 0 ? (
             lista.map((el) => {
               return (
-                <tr key={el.id} onClick={() => handleClientSelected(el)}>
+                <tr key={el.id} onClick={() => handleClientSelected(el)} style={el.active==0?{color:"red"}:{color:"black"}}>
                   <td>{el.id}</td>
                   <td>{el.nombre}</td>
                   <td>{el.direccion}</td>
@@ -110,12 +134,15 @@ function SelectClientCard({ setCliente, closeModal }) {
         </tbody>
       </table>
       {modal2 ? (
-        <ModalReservaciones closeModal={closeModal2} isOpen={isOpen2}>
+        <Modal closeModal={closeModal2} isOpen={isOpen2}>
           <AddClientCard closeModal={closeModal2} addCliente={addCliente} setAddCliente={setAddCliente}/>
-        </ModalReservaciones>
+        </Modal>
       ) : null}
+      {modal ?(<Modal closeModal={closeModal} isOpen={isOpen}>
+        <EdithClient closeModal={closeModal} data={clientToEdith} setClientToEdith={setClientToEdith} setLista={setLista} clientes={clientes} setClientes={setClientes}/>
+    </Modal>):null}
     </>
   );
 }
 
-export default SelectClientCard;
+export default CatalogoClientes;
