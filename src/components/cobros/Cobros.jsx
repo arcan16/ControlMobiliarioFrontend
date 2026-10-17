@@ -20,7 +20,7 @@ function CobrosCatalogo() {
             height: "fit-content"            
           }}
         >
-          ➕ Agregar
+          + Agregar
         </NavLink>
       </div>
       <CatalogoCobros />

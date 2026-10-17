@@ -44,8 +44,8 @@ export function NavBar() {
   return (
     <>
       <nav className="nav-container">
-        <NavLink to="/" className="logo-container" style={{ color: "black" }}>
-          <img src={mylogo} className="logo-principal"></img>
+        <NavLink to="/" className="logo-container">
+          <img src={mylogo} className="logo-principal" alt="Mobi Eventos"></img>
           <h2 className="logo-titulo">Control de Mobiliario</h2>
         </NavLink>
         <div className={`links ${clicked ? "active" : ""}`}>
@@ -87,7 +87,7 @@ export function NavBar() {
           <NavLink
             onClick={closeSession}
             to="/"
-            className={({ isActive }) => (isActive ? "active-link" : null)}
+            className="nav-logout"
           >
             Logout
           </NavLink>
