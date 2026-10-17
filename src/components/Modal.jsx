@@ -3,7 +3,7 @@ function Modal({children, closeModal, isOpen}) {
   return (
     <article className={`ventana-modal ${isOpen && "is-open"}`} onClick={closeModal}>
       <div className="modal-container"  onClick={handleModalContainerClick}>
-        <button className="modal-close" onClick={closeModal}>X</button>
+        <button className="modal-close" onClick={closeModal} aria-label="Cerrar">✕</button>
         {children}
       </div>
     </article>
