@@ -13,8 +13,8 @@ function CatalogoUsuarios() {
   const [addMobil, setAddMobil] = useState(0);
 
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/users`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/users`;
 
   let options = {
     headers: {

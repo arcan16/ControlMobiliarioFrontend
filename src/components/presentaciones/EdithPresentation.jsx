@@ -14,8 +14,8 @@ function EdithPresentation({
   const [isEdith, setIsEdith] = useState(false);
   
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/mobiliario`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/mobiliario`;
 
   let options = {
     headers: {
@@ -26,7 +26,7 @@ function EdithPresentation({
 
   // Obtiene los todos los registros de mobiliario
   function getMobiliario() {
-    url = `http://${host}:8080/mobiliario`;
+    url = `${host}/mobiliario`;
     api
       .get(url, options)
       .then((res) => {
@@ -193,7 +193,7 @@ function EdithPresentation({
   }
 
   function handleUpdatePresentation(e) {
-    let url = `http://${host}:8080/presentation/all`;
+    let url = `${host}/presentation/all`;
     const $form = document.querySelector(".data-section-modal-form.f2");
     console.log($form);
 
@@ -231,7 +231,7 @@ function EdithPresentation({
   
   function handleDelete(e){
     console.log(mobilToEdith)
-    let url = `http://${host}:8080/presentation/${mobilToEdith.id}`;
+    let url = `${host}/presentation/${mobilToEdith.id}`;
 
     api.del(url,options).then(res=>{
       console.log(res.message);

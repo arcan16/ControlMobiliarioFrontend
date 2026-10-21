@@ -15,7 +15,7 @@ function EdithMobiliario({
   setLista,
 }) {
 
-  let host = helpHost().getIp();
+  let host = helpHost().getApiUrl();
   let api = helpHttp();
   let url = "";
   let options = {
@@ -27,7 +27,7 @@ function EdithMobiliario({
 
   const [tipos, setTipo] = useState([])
   function getTipos() {
-    url = `http://${host}:8080/tipoMobiliario`;
+    url = `${host}/tipoMobiliario`;
     api.get(url, options).then((res) => {
       setTipo(res.content);
     }).catch(err=>alert("Error"));
@@ -39,7 +39,7 @@ function EdithMobiliario({
 
   // Elimina el cliente junto con sus registros enlazados siempre y cuando no renga reservaciones activas
   function delMobiliairo() {
-    url = `http://${host}:8080/mobiliario/${data.id}`;
+    url = `${host}/mobiliario/${data.id}`;
     api
       .del(url, options)
       .then((res) => {
@@ -70,7 +70,7 @@ function EdithMobiliario({
   function handleSave(e) {
     validateMobiliario(e);
     // alert("Validacion correcta")
-    url = `http://${host}:8080/mobiliario`;
+    url = `${host}/mobiliario`;
     let tipo = tipos.find(tipo=>tipo.nombre==data.tipo);
 
     options = { ...options, body: { id: data.id } };

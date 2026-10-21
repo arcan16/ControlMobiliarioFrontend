@@ -60,7 +60,8 @@ function App() {
   }, []);
 
   return (
-    <BrowserRouter>
+    // basename coincide con la ruta base de Vite (por ejemplo /ControlMobiliarioFrontend/ en GitHub Pages)
+    <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/$/, "")}>
       {isRecovery ? (
         <Recovery />
       ) : !Cookies.get("credentials") ? (

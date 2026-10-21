@@ -25,8 +25,8 @@ export default function AddReservaciones() {
   const [cliente, setCliente] = useState(null);
 
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/presentation`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/presentation`;
 
   let options = {
     headers: {
@@ -62,7 +62,7 @@ export default function AddReservaciones() {
 
   useEffect(() => {
     if (Object.keys(state).length > 0) {
-      let url = `http://${host}:8080/clients/name`;
+      let url = `${host}/clients/name`;
       let options = {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -299,7 +299,7 @@ export default function AddReservaciones() {
       );
 
     let api = helpHttp();
-    let url  = `http://${host}:8080/reservacion`;
+    let url  = `${host}/reservacion`;
 
     let options2 = {
       headers: {
@@ -337,7 +337,7 @@ export default function AddReservaciones() {
       });
     }
     e.preventDefault();
-    location.href="/reservaciones";
+    location.href = `${import.meta.env.BASE_URL}reservaciones`;
   }
 
   return (

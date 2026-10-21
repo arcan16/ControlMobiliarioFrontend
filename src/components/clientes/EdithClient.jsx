@@ -13,7 +13,7 @@ function EdithClient({
 }) {
   // console.log(data);
 
-  let host = helpHost().getIp();
+  let host = helpHost().getApiUrl();
   let api = helpHttp();
   let url = "";
   let options = {
@@ -25,7 +25,7 @@ function EdithClient({
 
   // Activa o desactiva el cliente seleccionado
   function changeActiveClient() {
-    url = `http://${host}:8080/clients/active/${data.id}`;
+    url = `${host}/clients/active/${data.id}`;
     try {
       api.del(url, options);
       const newData = clientes.map((cli) => {
@@ -43,7 +43,7 @@ function EdithClient({
 
   // Elimina el cliente junto con sus registros enlazados siempre y cuando no renga reservaciones activas
   function delClient() {
-    url = `http://${host}:8080/clients/all/${data.id}`;
+    url = `${host}/clients/all/${data.id}`;
     api
       .del(url, options)
       .then((res) => {
@@ -73,7 +73,7 @@ function EdithClient({
   function handleSave(e){
     validateClient(e);
 
-    url = `http://${host}:8080/clients`;
+    url = `${host}/clients`;
     options={...options,body:{id:data.id}}
     options.body.nombre = data.nombre;
     options.body.direccion = data.direccion;

@@ -6,11 +6,11 @@ import { helpHttp } from "../helpers/helpHttp";
 function Recover({closeModal}) {
   const [dataToRecover, setDataToRecover] = useState("");
   let api = helpHttp();
-  let host = helpHost().getIp();
+  let host = helpHost().getApiUrl();
   
   // Obtiene la informacion del servidor
   async function sendRecovery() {
-    let urlRecover = `http://${host}:8080/recover/${dataToRecover}`;
+    let urlRecover = `${host}/recover/${dataToRecover}`;
     let options = {
       headers: {
         "Content-Type": "application/json",

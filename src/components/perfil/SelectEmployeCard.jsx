@@ -16,8 +16,8 @@ function SelectEmployeCard({ setCliente, closeModal }) {
   const [addEmployee, setaddEmployee] = useState(0)
 
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/employees`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/employees`;
 
   let options = {
     headers: {

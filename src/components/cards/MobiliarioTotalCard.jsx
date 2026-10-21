@@ -6,8 +6,8 @@ import { helpHost } from "../../helpers/helpHost";
 function MobiliarioTotalCard() {
   const [mobiliario, setMobiliario] = useState([]);
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/mobiliario`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/mobiliario`;
   // let url = "http://192.168.1.69:8080/mobiliario";
   // let url = "http://localhost:8080/mobiliario";
   let options = {
@@ -27,7 +27,7 @@ function MobiliarioTotalCard() {
   }, []);
 
   function handleClickInventario(){
-    location.href="/mobiliario";
+    location.href = `${import.meta.env.BASE_URL}mobiliario`;
   }
 
   return (

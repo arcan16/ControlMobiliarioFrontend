@@ -10,8 +10,8 @@ function CatalogoCobros() {
   const [total, setTotal] = useState(0);
 
   let api = helpHttp();
-  let host = helpHost().getIp();
-  // let url = `http://${host}:8080/cobros`;
+  let host = helpHost().getApiUrl();
+  // let url = `${host}/cobros`;
   let options = {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -21,7 +21,7 @@ function CatalogoCobros() {
 
   // Realiza la peticion de cobros hechos al servidor
   function getCobros() {
-    let url = `http://${host}:8080/cobros`;
+    let url = `${host}/cobros`;
     api
       .get(url, options)
       .then((res) => {
@@ -75,7 +75,7 @@ function CatalogoCobros() {
   function handleFilterDate() {
     const $datePicker = document.getElementById("date-picker");
     if ($datePicker.value != "") {
-      let urlFilter = `http://${host}:8080/cobros/fecha`;
+      let urlFilter = `${host}/cobros/fecha`;
       let options2 = {
         ...options,
         body: {
@@ -112,7 +112,7 @@ function CatalogoCobros() {
   // Elimina el cobro seleccionado
   function deleteCobro(cobro) {
     let respuesta = confirm("Estas seguro de eliminar el cobro?");
-    let urlDel = `http://${host}:8080/cobros/cancel/${cobro.id}`;
+    let urlDel = `${host}/cobros/cancel/${cobro.id}`;
     let options = {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),

@@ -14,8 +14,8 @@ export default function Login({ setToken, setUserName }) {
   function handleSubmit() {
     let api = helpHttp();
 
-    let host = helpHost().getIp();
-    let url = `http://${host}:8080/login`;
+    let host = helpHost().getApiUrl();
+    let url = `${host}/login`;
 
     let userName = document.querySelector("#username");
     let password = document.querySelector("#password");
@@ -74,13 +74,13 @@ export default function Login({ setToken, setUserName }) {
 
   function getRol() {
     let api = helpHttp();
-    let host = helpHost().getIp();
+    let host = helpHost().getApiUrl();
     let options = {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     };
-    let urlActualUser = `http://${host}:8080/users/actual`;
+    let urlActualUser = `${host}/users/actual`;
     api
       .get(urlActualUser, options)
       .then((res) => localStorage.setItem("rol", res.rol.rol))

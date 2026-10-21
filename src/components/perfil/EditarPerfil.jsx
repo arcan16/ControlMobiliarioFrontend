@@ -26,7 +26,7 @@ function EditarPerfil() {
   const [isEmployeeChecked, setIsEmployeeChecked] = useState(false);
 
   //Load value of inputs
-  let host = helpHost().getIp();
+  let host = helpHost().getApiUrl();
   let api = helpHttp();
   let url = "";
   let options = {
@@ -36,7 +36,7 @@ function EditarPerfil() {
     },
   };
   async function getDataEmploye() {
-    url = `http://${host}:8080/employees/myData/${state.username}`;
+    url = `${host}/employees/myData/${state.username}`;
     try {
       const dataEmployee = await api.get(url, options);
       if(!dataEmployee.hasOwnProperty("err")){
@@ -50,7 +50,7 @@ function EditarPerfil() {
   }
 
   useEffect(() => {
-    if(state.length==0)return location.href="/configuracion"
+    if(state.length==0)return location.href = `${import.meta.env.BASE_URL}configuracion`
     setChangeUser(state);
     getDataEmploye();
   }, []);
@@ -120,8 +120,8 @@ function EditarPerfil() {
     }
   }
   async function sendData($form) {
-    let urlUsuario = `http://${host}:8080/users`;
-    let urlEmployee = `http://${host}:8080/employees`;
+    let urlUsuario = `${host}/users`;
+    let urlEmployee = `${host}/employees`;
     
     try {
       if (employee) {
@@ -175,7 +175,7 @@ function EditarPerfil() {
     localStorage.removeItem("username");
     localStorage.removeItem("token");
     Cookies.remove("credentials");
-    location.href = "/";
+    location.href = `${import.meta.env.BASE_URL}`;
   }
   function validacionUsuario($form, e) {
     // console.log(changeUser);

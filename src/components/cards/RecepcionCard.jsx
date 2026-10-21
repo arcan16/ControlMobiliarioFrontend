@@ -6,8 +6,8 @@ import { helpHost } from "../../helpers/helpHost";
 function RecepcionCard() {
   const [recepcion, setRecepcion] = useState([]);
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/reservacion/recepcion`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/reservacion/recepcion`;
   // let url = "http://192.168.1.69:8080/reservacion/recepcion";
   // let url = "http://localhost:8080/mobiliario";
   let options = {

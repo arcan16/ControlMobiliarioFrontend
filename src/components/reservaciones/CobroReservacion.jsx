@@ -8,8 +8,8 @@ function CobroReservacion({ closeModal, closeModalRaiz, data }) {
   const [dataTable, setDataTable] = useState([]);
 
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/cobros/total/${data.idReservacion}`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/cobros/total/${data.idReservacion}`;
 
   function returnToReservaciones() {
     const $montoRecibido = document.getElementById("pago-box");
@@ -23,7 +23,7 @@ function CobroReservacion({ closeModal, closeModalRaiz, data }) {
         alert("El importe recibido es menor a la venta, favor de verificar")
       );
 
-    url = `http://${host}:8080/cobros`;
+    url = `${host}/cobros`;
     let options = {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -41,7 +41,7 @@ function CobroReservacion({ closeModal, closeModalRaiz, data }) {
       })
       .catch((err) => alert(err));
 
-    location.href = "/reservaciones";
+    location.href = `${import.meta.env.BASE_URL}reservaciones`;
   }
 
   async function getData() {
@@ -56,7 +56,7 @@ function CobroReservacion({ closeModal, closeModalRaiz, data }) {
       const dataReservacion = await api.get(url, options);
 
       // Datos de las presentaciones
-      url = `http://${host}:8080/presentation`;
+      url = `${host}/presentation`;
       const dataPresentaciones = await api.get(url, options);
 
       setDataReservacion(dataReservacion);

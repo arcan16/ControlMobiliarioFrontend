@@ -21,11 +21,11 @@ function PerfilCard({ setIsAuth }) {
   const state = useSelector((state)=>state.actualUser);
   const dispatch = useDispatch();
   // console.log(state)
-  let host = helpHost().getIp();
+  let host = helpHost().getApiUrl();
   let api = helpHttp();
 
   async function getDataUser() {
-    let url = `http://${host}:8080/users/actual`;
+    let url = `${host}/users/actual`;
     let options = {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -54,7 +54,7 @@ function PerfilCard({ setIsAuth }) {
     localStorage.removeItem("username");
     localStorage.removeItem("token");
     Cookies.remove("credentials");
-    location.href = "/";
+    location.href = `${import.meta.env.BASE_URL}`;
   }
 
   return (

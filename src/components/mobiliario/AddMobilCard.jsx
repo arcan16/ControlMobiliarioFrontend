@@ -7,8 +7,8 @@ function AddMobilCard({ closeModal, addMobil, setAddMobil }) {
   const [lista, setLista] = useState([]);
 
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/mobiliario`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/mobiliario`;
 
   let options = {
     headers: {
@@ -72,7 +72,7 @@ function AddMobilCard({ closeModal, addMobil, setAddMobil }) {
   // Obtiene los tipos de mobiliario registrados
   const [tipos, setTipo] = useState([]);
   function getTipos() {
-    url = `http://${host}:8080/tipoMobiliario`;
+    url = `${host}/tipoMobiliario`;
     api
       .get(url, options)
       .then((res) => {

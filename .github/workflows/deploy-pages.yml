@@ -1,0 +1,53 @@
+# Compila el frontend y lo publica en GitHub Pages.
+# Requisitos (una sola vez, en GitHub):
+#   1. Settings > Pages > Source: "GitHub Actions".
+#   2. Settings > Secrets and variables > Actions > Variables: crear VITE_API_URL
+#      con la dirección HTTPS del backend (por ejemplo https://api.midominio.com).
+# Mientras VITE_API_URL no exista, el despliegue se omite.
+name: Desplegar en GitHub Pages
+
+on:
+  push:
+    branches: ['main']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: ${{ vars.VITE_API_URL != '' }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+      - name: Install dependencies
+        run: npm ci
+      - name: Build
+        run: npm run build
+        env:
+          VITE_API_URL: ${{ vars.VITE_API_URL }}
+          BASE_PATH: /${{ github.event.repository.name }}/
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

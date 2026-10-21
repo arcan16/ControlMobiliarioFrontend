@@ -20,7 +20,7 @@ function EdithPerfil() {
   // console.log("Estado")
   // console.log(state)
   // Solicitud de los datos del empleado enlazado al usuario
-  let host = helpHost().getIp();
+  let host = helpHost().getApiUrl();
   let api = helpHttp();
   let options = {
     headers: {
@@ -29,7 +29,7 @@ function EdithPerfil() {
     },
   };
   async function getDataUser() {
-    let url = `http://${host}:8080/employees/myData/${state.username}`;
+    let url = `${host}/employees/myData/${state.username}`;
     let options = {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -204,8 +204,8 @@ function EdithPerfil() {
   }
 
   async function handleSendData(data, $edithPass, e) {
-    let urlUser = `http://${host}:8080/users`;
-    let urlEmployee = `http://${host}:8080/employees`;
+    let urlUser = `${host}/users`;
+    let urlEmployee = `${host}/employees`;
     const $checkEmpleado = document.getElementById("check-empleado");
 
     let dataUser = {};
@@ -293,7 +293,7 @@ function EdithPerfil() {
     localStorage.removeItem("username");
     localStorage.removeItem("token");
     Cookies.remove("credentials");
-    location.href = "/";
+    location.href = `${import.meta.env.BASE_URL}`;
   }
 
   // Comportamiento de boton Cancelar

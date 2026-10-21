@@ -6,8 +6,8 @@ import { helpHost } from "../../helpers/helpHost";
 function EntregasCard() {
   const [entregas, setEntregas] = useState([]);
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/reservacion/entregas`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/reservacion/entregas`;
   // let url = "http://192.168.1.69:8080/reservacion/entregas";
   // let url = "http://localhost:8080/mobiliario";
   let options = {
@@ -28,7 +28,7 @@ function EntregasCard() {
 
   function handleEntregasProgramadas(){
     // alert("Entregas programadas para hoy")
-    location.href="/reservaciones";
+    location.href = `${import.meta.env.BASE_URL}reservaciones`;
   }
 
   return (

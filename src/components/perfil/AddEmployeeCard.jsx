@@ -7,8 +7,8 @@ function AddEmployeeCard({ closeModal, addEmployee, setaddEmployee }) {
   const [lista, setLista] = useState([]);
 
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/clients`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/clients`;
 
   let options = {
     headers: {

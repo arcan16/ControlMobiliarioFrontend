@@ -9,8 +9,8 @@ function CatalogoTiposMobiliario() {
   const [updateTipo, setUpdateTipo] = useState({});
 
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/tipoMobiliario`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/tipoMobiliario`;
 
   let options = {
     headers: {
@@ -63,7 +63,7 @@ function CatalogoTiposMobiliario() {
   function handleClickAgregar() {
     const $search = window.document.querySelector("#search-box");
     const $searchBtn = document.getElementById("agregarBtn");
-    let url = `http://${host}:8080/tipoMobiliario`;
+    let url = `${host}/tipoMobiliario`;
     let options2 = {
       ...options,
       body: {
@@ -104,7 +104,7 @@ function CatalogoTiposMobiliario() {
 
   function handleDelete(data, e) {
     e.stopPropagation();
-    let url = `http://${host}:8080/tipoMobiliario/${data.id}`;
+    let url = `${host}/tipoMobiliario/${data.id}`;
     api
       .del(url, options)
       .then((res) => {

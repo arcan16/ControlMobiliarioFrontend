@@ -8,8 +8,8 @@ function ReservacionesAgendadasCatalogo() {
   const [resVig, setResVig] = useState({});
   const [actualData, setActualData] = useState({});
 
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/reservacion/vigentes`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/reservacion/vigentes`;
 
   let options = {
     headers: {

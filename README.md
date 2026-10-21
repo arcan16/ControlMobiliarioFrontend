@@ -85,7 +85,9 @@ Todos los estilos están en `src/App.css`. Los colores, radios y sombras se defi
    git clone https://github.com/arcan16/ControlMobiliarioFrontend.git
    cd ControlMobiliarioFrontend
    ```
-3. Indica la dirección del backend en `src/helpers/helpHost.js`. La función `getIp()` devuelve la IP del equipo donde corre la API (por ejemplo `localhost`); el frontend se conecta al puerto `8080`.
+3. Indica la dirección del backend. Tienes dos opciones:
+   - Copia `.env.example` como `.env.local` y escribe la URL completa de la API en `VITE_API_URL` (por ejemplo `http://localhost:8080`).
+   - O deja `VITE_API_URL` vacía y cambia la IP que devuelve `getIp()` en `src/helpers/helpHost.js`; el frontend se conecta a esa IP en el puerto `8080`.
 4. Instala las dependencias y arranca el servidor de desarrollo:
    ```bash
    npm install
@@ -100,6 +102,24 @@ Todos los estilos están en `src/App.css`. Los colores, radios y sombras se defi
 | `npm run build` | Genera la versión de producción en la carpeta `dist/` |
 | `npm run preview` | Sirve localmente la versión de producción |
 | `npm run lint` | Revisa el código con ESLint |
+
+### Despliegue en GitHub Pages
+
+El workflow `.github/workflows/deploy-pages.yml` compila y publica el frontend en `https://arcan16.github.io/ControlMobiliarioFrontend/` cada vez que se sube un cambio a `main`. También se puede lanzar a mano desde la pestaña **Actions**.
+
+GitHub Pages solo sirve archivos estáticos, así que **el backend debe estar publicado aparte**, en un servidor accesible desde Internet y con **HTTPS**: los navegadores bloquean las peticiones a `http://` desde una página `https://`.
+
+Configuración (una sola vez, en el repositorio de GitHub):
+
+1. **Settings → Pages → Build and deployment → Source:** elige **GitHub Actions**.
+2. **Settings → Secrets and variables → Actions → Variables:** crea la variable `VITE_API_URL` con la dirección del backend, por ejemplo `https://api.midominio.com`.
+3. Sube un cambio a `main` o ejecuta el workflow **Desplegar en GitHub Pages** desde **Actions**.
+
+Mientras la variable `VITE_API_URL` no exista, el workflow se omite, para no publicar un sitio sin backend.
+
+El workflow compila con la ruta base `/ControlMobiliarioFrontend/` (variable `BASE_PATH`) y genera un `404.html` para que las rutas internas carguen al recargar la página.
+
+> **Pendiente en el backend:** el enlace de recuperación de contraseña que se envía por correo apunta a `http://<IP del servidor>:5173/recovery` (`RecoveryController.java`). Para que funcione con el sitio publicado, debe apuntar a la dirección de GitHub Pages.
 
 ### Primer inicio de sesión
 

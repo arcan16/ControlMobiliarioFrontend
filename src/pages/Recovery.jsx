@@ -37,8 +37,8 @@ function Recovery() {
 
   function sendData() {
     let api = helpHttp();
-    let host = helpHost().getIp();
-    let urlRecover = `http://${host}:8080/recover/recovery`;
+    let host = helpHost().getApiUrl();
+    let urlRecover = `${host}/recover/recovery`;
     let options = {
       headers: {
         "Content-Type": "application/json",
@@ -54,7 +54,7 @@ function Recovery() {
       .post2(urlRecover, options)
       .then((res) => {
         console.log(res);
-        location.href="/login";
+        location.href = `${import.meta.env.BASE_URL}login`;
       })
       .catch((err) => console.log(err));
   }

@@ -6,8 +6,8 @@ import { helpHost } from "../../helpers/helpHost";
 function reservacionesActivasCard() {
   const [reservacionesActivas, setReservacionesActivas] = useState(0);
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/reservacion/statusOne`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/reservacion/statusOne`;
   // let url = "http://192.168.1.69:8080/reservacion/statusOne";
   // let url = "http://localhost:8080/reservacion/statusOne";
   let options = {
@@ -27,7 +27,7 @@ function reservacionesActivasCard() {
   },[]);
 
   function handleClick(){
-    location.href="/reservaciones";
+    location.href = `${import.meta.env.BASE_URL}reservaciones`;
     // alert("Prestamos activos")
   }
   return (

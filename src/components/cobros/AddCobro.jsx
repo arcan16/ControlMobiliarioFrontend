@@ -22,8 +22,8 @@ function AddCobro() {
 
   /* Inicia declaracion de variables utilizadas para las peticiones al servidor */
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/cobros/total/${search}`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/cobros/total/${search}`;
   
   let options = {
     headers: {
@@ -127,7 +127,7 @@ function AddCobro() {
         alert("El importe recibido es menor a la venta, favor de verificar")
       );
 
-    url = `http://${host}:8080/cobros`;
+    url = `${host}/cobros`;
     let options = {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -145,7 +145,7 @@ function AddCobro() {
       })
       .catch((err) => alert(err));
 
-    location.href = "/cobros";
+    location.href = `${import.meta.env.BASE_URL}cobros`;
   }
 
 

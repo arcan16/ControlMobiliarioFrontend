@@ -19,8 +19,8 @@ function ModalContent({
   const [isOpenCobro, setIsOpenCobro] = useState(false);
 
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/reservacion`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/reservacion`;
 
   let options = {
     headers: {

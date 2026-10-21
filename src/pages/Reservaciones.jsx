@@ -20,8 +20,8 @@ export default function Reservaciones() {
   const [dataFilter, setDataFilter] = useState([]);
 
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/reservacion/periodo`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/reservacion/periodo`;
 
   function handleOpen() {
     getReservaciones();

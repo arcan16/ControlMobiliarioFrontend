@@ -5,9 +5,9 @@ import { helpHttp } from "../../helpers/helpHttp";
 import { useEffect, useState } from "react";
 
 function AddUser({ closeModal, getUsers }) {
-  let host = helpHost().getIp();
+  let host = helpHost().getApiUrl();
   let api = helpHttp();
-  let url = `http://${host}:8080/users/createUser`;
+  let url = `${host}/users/createUser`;
   let options = {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("token"),
@@ -36,7 +36,7 @@ function AddUser({ closeModal, getUsers }) {
 
   // Valida que el username del usuario este disponible
   function validateUserDisponible($form) {
-    let url = `http://${host}:8080/users/available/${$form.username.value}`;
+    let url = `${host}/users/available/${$form.username.value}`;
     api
       .get2(url, options)
       .then((res) => console.log(res.message))
@@ -45,7 +45,7 @@ function AddUser({ closeModal, getUsers }) {
 
   // Crea unicamente al usuario
   function createUser($form) {
-    let url2 = `http://${host}:8080/users/createUser`;
+    let url2 = `${host}/users/createUser`;
     let optionsUser = {
       ...options,
       body: {
@@ -71,7 +71,7 @@ function AddUser({ closeModal, getUsers }) {
 
   // Crea el registro de usuario y el de empleado
   function createUserEmployee(){
-    let url2 = `http://${host}:8080/users/createUserEmployee`;
+    let url2 = `${host}/users/createUserEmployee`;
     let optionsUserE = {
       ...options,
       body: {
@@ -103,7 +103,7 @@ function AddUser({ closeModal, getUsers }) {
 
   // Valida disponibilidad de username y empleado para realizar el registro
   function validateCompleteDisponibility($form) {
-    let url = `http://${host}:8080/users/availableue/${$form.username.value}/${$form.nombre.value}/${$form.apellido.value}`;
+    let url = `${host}/users/availableue/${$form.username.value}/${$form.nombre.value}/${$form.apellido.value}`;
     console.log($form.apellido.value);
     api
       .get2(url, options)

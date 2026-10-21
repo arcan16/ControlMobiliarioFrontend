@@ -9,7 +9,7 @@ function UpdateUser({ closeModal, data, getUsers }) {
   const [initialData, setInitialData] = useState({});
   const [isLinkData, setIsLinkData] = useState(false);
 
-  let host = helpHost().getIp();
+  let host = helpHost().getApiUrl();
   let api = helpHttp();
   let url = "";
   let options = {
@@ -22,7 +22,7 @@ function UpdateUser({ closeModal, data, getUsers }) {
   // Realiza la peticion de los datos del empelado ligados al usuario seleccionado hacia el servidor
   // y actualiza el estado "dataUser()"
   function getEmployeeData() {
-    url = `http://${host}:8080/employees/myData/${data.username}`;
+    url = `${host}/employees/myData/${data.username}`;
     api
       .get2(url, options)
       .then((res) => {
@@ -113,7 +113,7 @@ function UpdateUser({ closeModal, data, getUsers }) {
 
   // Actualiza unicamente al usuario
   function updateUser($form) {
-    let url2 = `http://${host}:8080/users/update`;
+    let url2 = `${host}/users/update`;
     let optionsUser = {
       ...options,
       body: {
@@ -143,7 +143,7 @@ function UpdateUser({ closeModal, data, getUsers }) {
 
   // Actualiza el registro del usuario y el de empleado
   function updateUserEmployee($form) {
-    let url2 = `http://${host}:8080/users/updateComplete`;
+    let url2 = `${host}/users/updateComplete`;
     let optionsUserE = {
       ...options,
       body: {
@@ -252,7 +252,7 @@ function UpdateUser({ closeModal, data, getUsers }) {
 
   function deleteUSer(){
     console.log(data.id)
-    let url = `http://${host}:8080/users/delteUserEmployee/${data.id}`;
+    let url = `${host}/users/delteUserEmployee/${data.id}`;
     api.del2(url, options).then((res)=>{
       alert(res.message);
       getUsers();

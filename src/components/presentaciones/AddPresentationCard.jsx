@@ -9,8 +9,8 @@ function AddPresentationCard({ closeModal, addMobil, getPresentation ,setAddMobi
   const [isEdith, setIsEdith] = useState(false);
 
   let api = helpHttp();
-  let host = helpHost().getIp();
-  let url = `http://${host}:8080/mobiliario`;
+  let host = helpHost().getApiUrl();
+  let url = `${host}/mobiliario`;
 
   let options = {
     headers: {
@@ -21,7 +21,7 @@ function AddPresentationCard({ closeModal, addMobil, getPresentation ,setAddMobi
 
   // Obtiene los todos los registros de mobiliario
   function getMobiliario() {
-    url = `http://${host}:8080/mobiliario`;
+    url = `${host}/mobiliario`;
     api
       .get(url, options)
       .then((res) => {
@@ -174,7 +174,7 @@ function AddPresentationCard({ closeModal, addMobil, getPresentation ,setAddMobi
   }
 
   function handleSavePresentation(){
-    let url = `http://${host}:8080/presentation`
+    let url = `${host}/presentation`
     const $form = document.querySelector(".data-section-modal-form");
     if($form.descripcion.value==""){
       $form.descripcion.focus();
